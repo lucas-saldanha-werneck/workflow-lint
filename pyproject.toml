@@ -1,0 +1,18 @@
+[project]
+name = "workflow-lint"
+version = "0.1.0"
+description = "Static reliability checks for n8n-style workflow JSON exports"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+workflow-lint = "wflint.cli:main"
+
+[tool.setuptools]
+packages = ["wflint"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

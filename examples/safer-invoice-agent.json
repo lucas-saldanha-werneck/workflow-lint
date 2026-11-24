@@ -1,0 +1,16 @@
+{
+  "_note": "EXAMPLE workflow invented for this demo. Not from any real company.",
+  "name": "Example: invoice question agent (safer)",
+  "nodes": [
+    {"name": "Incoming", "type": "n8n-nodes-base.webhook", "parameters": {"path": "invoice-q", "authentication": "headerAuth"}},
+    {"name": "Agent", "type": "@n8n/n8n-nodes-langchain.agent", "parameters": {"text": "={{ $json.body.question }}"}},
+    {"name": "Check answer", "type": "n8n-nodes-base.if", "parameters": {}},
+    {"name": "Reply", "type": "n8n-nodes-base.httpRequest", "retryOnFail": true, "parameters": {"url": "https://example.invalid/reply", "method": "POST", "authentication": "genericCredentialType"}}
+  ],
+  "connections": {
+    "Incoming": {"main": [[{"node": "Agent", "type": "main", "index": 0}]]},
+    "Agent": {"main": [[{"node": "Check answer", "type": "main", "index": 0}]]},
+    "Check answer": {"main": [[{"node": "Reply", "type": "main", "index": 0}]]}
+  },
+  "settings": {"errorWorkflow": "err-handler-1"}
+}

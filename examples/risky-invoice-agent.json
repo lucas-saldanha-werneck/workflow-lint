@@ -1,0 +1,16 @@
+{
+  "_note": "EXAMPLE workflow invented for this demo. Not from any real company.",
+  "name": "Example: invoice question agent",
+  "nodes": [
+    {"name": "Incoming", "type": "n8n-nodes-base.webhook", "parameters": {"path": "invoice-q"}},
+    {"name": "Agent", "type": "@n8n/n8n-nodes-langchain.agent", "parameters": {"text": "={{ $json.body.question }}"}},
+    {"name": "Reply", "type": "n8n-nodes-base.httpRequest", "parameters": {"url": "https://example.invalid/reply", "method": "POST", "headerParameters": {"parameters": [{"name": "Authorization", "value": "Bearer abcdefghijklmnop1234567890"}]}}},
+    {"name": "Old step", "type": "n8n-nodes-base.set", "parameters": {}, "disabled": true},
+    {"name": "Lost note", "type": "n8n-nodes-base.set", "parameters": {}}
+  ],
+  "connections": {
+    "Incoming": {"main": [[{"node": "Agent", "type": "main", "index": 0}]]},
+    "Agent": {"main": [[{"node": "Reply", "type": "main", "index": 0}]]}
+  },
+  "settings": {}
+}
